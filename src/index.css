@@ -1,5 +1,13 @@
+body::-webkit-scrollbar{
+  display: none;
+}
+
 *{
   margin: 0;
+}
+
+html{
+  min-width: 750px;
 }
 
 body {
