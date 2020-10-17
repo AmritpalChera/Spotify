@@ -1,5 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This is a functional spotify clone that connects to your spotify premium app on any device. 
+# Live Link
+### [https://spotify-clone-62afd.web.app]
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 ## Available Scripts
 
 In the project directory, you can run:
