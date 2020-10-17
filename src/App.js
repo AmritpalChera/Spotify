@@ -15,7 +15,7 @@ function App() {
 
   //dispatch is like a gun to shoot the data to the datalayer
   //you can use the first object to get anything from the dataLayer {user, token, ...}
-  const [{user, token}, dispatch] = useDataLayerValue(); // {user} = dataLayer.user
+  const [{user, token, playlists}, dispatch] = useDataLayerValue(); // {user} = dataLayer.user
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -25,16 +25,23 @@ function App() {
     //only update token if we have a hash object
     if (_token) {
       
+      //setToken(_token);
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       })
-      //setToken(_token);
       
+      // shoot spotify functions to the context
+      dispatch({
+        type: "SET_SPOTIFY",
+        spotify: spotify
+      })
+
       spotify.setAccessToken(_token); //sets the token for api
 
       //gets the current user information from spotify, if success, pops it into dataLayer
       spotify.getMe().then(user => {
+        //sets the current user 
         dispatch({
           type: 'SET_USER',
           user: user
@@ -42,18 +49,26 @@ function App() {
       });
 
       spotify.getUserPlaylists().then((playlists) => {
+        //get the user playlists (listed in sidebar)
+        console.log("PLAYLIST>> ", playlists);
         dispatch({
           type: "SET_PLAYLISTS",
           playlists: playlists,
         })
       })
 
-      spotify.getPlaylist('3xqWxN2XRsvZAUlkEFuGdu').then((response)=>{
-        dispatch(({
-          type: "SET_DISCOVER_WEEKLY",
-          discover_weekly: response,
-         })) 
+      
+      
+
+      spotify.getMyTopArtists().then(response => {
+        //get the top artists 
+        dispatch({
+          type: "SET_TOP_ARTISTS",
+          top_artists: response
+        })
       })
+
+      
     } 
 
     //console.log("I HAVE A TOKEN >>>>", _token);

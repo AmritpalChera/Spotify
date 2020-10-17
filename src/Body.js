@@ -8,7 +8,61 @@ import Header from './Header'
 import SongRow from './SongRow';
 
 const Body = ({ spotify }) => {
-    const [{discover_weekly}, dispatch] = useDataLayerValue();
+    const [{ discover_weekly }, dispatch] = useDataLayerValue();
+    
+
+    //function that plays the playlist given its id
+    const playPlaylist = (id) => {     
+        spotify.play({
+            context_uri: `spotify:playlist:3xqWxN2XRsvZAUlkEFuGdu`//
+        });
+
+        setTimeout(function () { 
+            spotify.getMyCurrentPlayingTrack().then(res => {
+                dispatch({
+                    type: "SET_ITEM",
+                    item: res.item
+                });
+                dispatch({
+                    type: 'SET_PLAYING',
+                    playing: true
+                });
+            })
+        }, 500);
+    };
+
+    //function that plays the songs in the playlist given its id
+    const playSong = (id) => {    
+        console.log("CALLED")
+        spotify.play({
+            uris: [`spotify:track:${id}`] //uris
+        }).catch(err => {
+            alert("Please run the premium spotify app on any device. Remember to press the play button to active the process");
+        });
+            
+        setTimeout(
+            function (){
+                spotify.getMyCurrentPlayingTrack().then(res => {
+                    console.log("PLAY SONG >>>", res);
+                    dispatch({
+                        type: "SET_ITEM",
+                        item: res.item
+                    });
+                    dispatch({
+                        type: 'SET_PLAYING',
+                        playing: true
+                    });
+                }).catch(err => console.log(err))
+            }, 500);
+        
+        
+            
+
+        
+    };
+
+    
+
     return (
         <div className="body">
             <Header spotify={spotify} />
@@ -25,12 +79,12 @@ const Body = ({ spotify }) => {
 
             <div className="body-songs">
                     <div className="body-icons">
-                        <PlayCircleFilledIcon className="body-shuffle"/>
+                    <PlayCircleFilledIcon className="body-shuffle" onClick={playPlaylist}/>
                         <FavoriteIcon fontSize="large"/>
                         <MoreHorizIcon />
                     </div>
                     {discover_weekly?.tracks.items.map(item =>
-                        <SongRow track={item.track}/>)}
+                        <SongRow playSong={playSong} key={item.track.name} track={item.track}/>)}
             </div>
         </div>
     )
