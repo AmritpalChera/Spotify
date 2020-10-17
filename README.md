@@ -1,5 +1,5 @@
 
-This is a functional spotify clone that connects to your spotify premium app on any device. 
+This is a functional spotify clone that connects to your spotify `premium` app on any device. 
 # Live Link
 ### [https://spotify-clone-62afd.web.app]
 
